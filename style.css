@@ -1,14 +1,17 @@
 td {
     border: 1px solid blue;
-    
+    max-width: 164px;
+    min-width: 164px;
 }
 
 td:hover {
     background: orange;
 }
 
+
 table {
     border: 1px solid green;
     width: 500px;
     height: 600px;
+    text-align: center;
 }

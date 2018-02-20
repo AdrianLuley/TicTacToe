@@ -14,13 +14,72 @@ const winningCombinations = [
     [1, 5, 9],
     [3, 5, 7]
 ]
-handleClick = function(event) {
+handleClick = function (event) {
     var cell = event.target
-    console.log(cell.id);
-  }
-  
-  var cells = document.querySelectorAll("td");
-  
-  for(var i = 0; i < cells.length; i++) {
+    cell.innerHTML = currentPlayer;
+
+    if (currentPlayer === "X") {
+        playerSelections = playerXSelections;
+        nextPlayer = "O";
+    } else {
+        playerSelections = playerOSelections;
+        nextPlayer = "X";
+    }
+
+    playerSelections.push(parseInt(cell.id));
+
+    if (checkWinner(playerSelections)) {
+        alert("Player " + currentPlayer + " wins!")
+        resetGame();
+    }
+
+    if (checkDraw()) {
+        alert("Draw!");
+        resetGame();
+    }
+
+    // Swap players
+    currentPlayer = nextPlayer;
+    console.log(checkWinner());
+}
+
+var cells = document.querySelectorAll("td");
+
+for (var i = 0; i < cells.length; i++) {
     cells[i].addEventListener('click', handleClick)
-  }
+
+
+}
+
+checkWinner = function () {
+    for (let i = 0; i < winningCombinations.length; i++) {
+        let matches = 0;
+        var combination = winningCombinations[i];
+
+        for (let j = 0; j < 3; j++) {
+            if (playerSelections.includes(combination[j])) {
+                matches++;
+            } else {
+                break;
+            }
+        }
+        if (matches == 3) {
+            return true;
+           
+        }
+    }
+    return false;
+   
+}
+
+function checkDraw() {
+    return playerOSelections.length + playerXSelections.length >= cells.length
+}
+
+function resetGame() {
+    playerXSelections = new Array();
+    playerOSelections = new Array();
+    for (var i = 0; i < cells.length; i++) {
+        cells[i].innerHTML = "Click Me!"
+    }
+}
